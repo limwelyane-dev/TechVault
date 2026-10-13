@@ -17,9 +17,14 @@ const errorMiddleware = require("./middleware/errorMiddleware");
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://tech-vault-azure.vercel.app",
+    ],
+  })
+);
 
 app.use(helmet());
 app.use(express.json());
