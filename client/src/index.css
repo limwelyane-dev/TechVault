@@ -1,0 +1,16 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Zen+Dots&display=swap');
+@import "tailwindcss";
+body {
+  color: rgb(3, 50, 68);
+}
+
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.logo1 {
+  font-family: "Orbitron", sans-serif;
+}
