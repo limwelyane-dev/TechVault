@@ -2,7 +2,15 @@ require("dotenv").config();
 
 const express = require("express");
 const pool = require("./db/database");
+
 const cors = require("cors");
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://tech-vault-azure.vercel.app",
+  "https://tech-vault-d9ns9tq12-lim-5097.vercel.app",
+];
+
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
@@ -19,10 +27,13 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://tech-vault-azure.vercel.app",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
   })
 );
 
