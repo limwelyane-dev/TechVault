@@ -6,6 +6,8 @@ import { loginUser } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useLocation, Link } from "react-router-dom";
 import {ArrowRight, Mail, Eye, Lock, EyeOff} from "lucide-react"
+import { AnimatePresence } from "framer-motion";
+import LoginLoader from "./LoginLoader";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -20,15 +22,16 @@ function Login() {
 
   const { login } = useAuth();
 
+  
   const mutation = useMutation({
     mutationFn: loginUser,
 
     onSuccess: (data) => {
       login(data.token);
-
       navigate("/products");
     },
   });
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,6 +44,10 @@ function Login() {
 
   return (
     <section className="flex min-h-screen flex-col">
+      
+      <AnimatePresence>
+        {mutation.isPending && <LoginLoader />}
+      </AnimatePresence>
 
         <div className="flex justify-end px-4 py-2 mb-2">
           <p className="text-sm text-slate-500">
@@ -231,37 +238,29 @@ function Login() {
                 <p className="text-red-400 text-[12px]">{mutation.error.message}</p>
               )}
               
-              <button
-                type="submit"
-                className="
-                  group
-                  flex h-12 w-full
-                  items-center
-                  justify-center
-                  mt-2
-                  gap-2
-                  rounded-xl
-                  bg-blue-600
-                  font-semibold
-                  text-white
-                  shadow-lg
-                  shadow-blue-600/20
-                  transition
-                  hover:bg-blue-700
-                  hover:shadow-blue-600/30
-                  active:scale-[0.99]
-                "
-              >
-                Sign In
+              
+            <button
+              type="submit"
+              disabled={mutation.isPending}
+              className="
+                group flex h-12 w-full items-center justify-center
+                mt-2 gap-2 rounded-xl bg-blue-600
+                font-semibold text-white shadow-lg
+                shadow-blue-600/20 transition
+                hover:bg-blue-700 disabled:cursor-not-allowed
+                disabled:opacity-70
+              "
+            >
+              {mutation.isPending ? "Signing in..." : "Sign In"}
 
+              {!mutation.isPending && (
                 <ArrowRight
                   size={18}
-                  className="
-                    transition-transform
-                    group-hover:translate-x-1
-                  "
+                  className="transition-transform group-hover:translate-x-1"
                 />
-              </button>
+              )}
+            </button>
+
 
             </form>
 
